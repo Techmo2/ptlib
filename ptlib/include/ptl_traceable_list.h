@@ -1,5 +1,5 @@
-#ifndef TRACABLE_LIST_h
-#define TRACABLE_LIST_h
+#ifndef traceable_LIST_h
+#define traceable_LIST_h
 
 #include "ptl_traceable.h"
 
@@ -9,12 +9,12 @@ struct TraceableList {
     struct Traceable* elements;
 };
 
-struct TraceableList* tracable_list_new(unsigned int capacity_);
+struct TraceableList* traceable_list_new(unsigned int capacity_);
 
-void tracable_list_grow(struct TraceableList *list);
+void traceable_list_grow(struct TraceableList *list);
 
-void tracable_list_push(struct Traceable t, struct TraceableList *list);
+void traceable_list_push(struct Traceable t, struct TraceableList *list);
 
-void tracable_list_free(struct TraceableList *list);
+void traceable_list_free(struct TraceableList *list);
 
-#endif //TRACABLE_LIST_h
+#endif //traceable_LIST_h

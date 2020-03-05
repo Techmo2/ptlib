@@ -3,9 +3,10 @@
 
 #include <malloc.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void scene_free(struct Scene* s){
-    tracable_list_free(s->items);
+    traceable_list_free(s->items);
     image_free(s->rendered);
 
     free(s);
@@ -18,15 +19,15 @@ struct Scene* scene_new(unsigned int width_, unsigned int height_, enum PTLIB_RE
     s->height = height_;
     s->device = render_device_;
 
-    s->items = tracable_list_new(10);
+    s->items = traceable_list_new(10);
 
     s->rendered = image_new(width_, height_);
 
     return s;
 }
 
-void scene_add_tracable(struct Scene* scene, struct Traceable t){
-    tracable_list_push(t, scene->items);
+void scene_add_traceable(struct Scene* scene, struct Traceable t){
+    traceable_list_push(t, scene->items);
 }
 
 PTNUM luma(struct Vec color){
@@ -146,6 +147,7 @@ struct Image* scene_render_from(struct Scene* scene, struct Ray *c, unsigned int
     struct Vec cy = vec_mult(vec_norm(vec_cross(cx, c->direction)), fov_scale);
 
     for(int y = 0; y < height; ++y){
+        fprintf(stderr, "\r Rendering (%d spp) %5.2f%%", samples, 100.0 * y/(height - 1));
         for(unsigned short x = 0; x < width; ++x){
             // 2x2 subpixel rows
             for(int sy = 0, i = (height - y - 1) * width + x; sy < 2; ++sy){

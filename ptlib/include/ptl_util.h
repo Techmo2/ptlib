@@ -9,10 +9,8 @@
 #include <float.h>
 #endif
 
-inline PTNUM clamp(PTNUM x);
-
-inline int to_int(PTNUM x);
-
-inline int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list);
+PTNUM clamp(PTNUM x);
+int to_int(PTNUM x);
+int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list);
 
 #endif //PTLIB_UTIL_h

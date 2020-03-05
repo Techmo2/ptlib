@@ -20,7 +20,7 @@ void traceable_list_grow(struct TraceableList *list){
 
 void traceable_list_push(struct Traceable t, struct TraceableList *list){
     if(list->size >= list->capacity){
-        tracable_list_grow(list);
+        traceable_list_grow(list);
     }
 
     list->elements[list->size] = t;
