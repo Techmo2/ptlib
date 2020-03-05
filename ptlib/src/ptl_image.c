@@ -1,5 +1,5 @@
 #include "ptl_image.h"
-#include <malloc.h>
+#include <stdlib.h>
 
 struct Image* image_new(unsigned int width, unsigned int height){
     struct Image *img;

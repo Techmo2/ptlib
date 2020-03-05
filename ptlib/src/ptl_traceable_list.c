@@ -1,6 +1,5 @@
 #include "ptl_traceable_list.h"
-
-#include <malloc.h>
+#include <stdlib.h>
 
 struct TraceableList* traceable_list_new(unsigned int capacity_){
     struct TraceableList *list;

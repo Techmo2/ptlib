@@ -20,4 +20,5 @@ int main(int argc, char** argv){
     struct Ray camera = ray_init(vec_init(50, 52, 295.6), vec_norm(vec_init(0, -0.042612, -1)));
 
     struct Image* rendered = scene_render_from(scene, &camera, samples, width, height);
+    
 }
