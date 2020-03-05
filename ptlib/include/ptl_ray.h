@@ -7,11 +7,6 @@ struct Ray {
     struct Vec origin, direction;
 };
 
-struct Ray ray_init(struct Vec origin_, struct Vec direction_){
-    struct Ray r;
-    r.origin = origin_;
-    r.direction = direction_;
-    return r;
-}
+struct Ray ray_init(struct Vec origin_, struct Vec direction_);
 
 #endif //PTLIB_RAY_h
