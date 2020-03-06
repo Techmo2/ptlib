@@ -10,7 +10,7 @@ A simple vector with various vector operations.
 #define PTLIB_VECTOR_h
 
 /* Define precision */
-#define PTNUM float
+#define PTNUM double
 
 /* Ensure the sqrt() function is available of not using OpenCL */
 #ifndef __OPENCL_VERSION__

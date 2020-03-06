@@ -1,6 +1,8 @@
 #include "ptl_util.h"
 
-inline PTNUM clamp(PTNUM x){
+#include <stdio.h>
+
+PTNUM clamp(PTNUM x){
     if(x < 0) {
         return 0;
     }
@@ -12,11 +14,11 @@ inline PTNUM clamp(PTNUM x){
     return x;
 }
 
-inline int to_int(PTNUM x){
+int to_int(PTNUM x){
     return (int) (pow(clamp(x), 0.454545) * 255 + 0.5);
 }
 
-inline int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list){
+int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list){
     PTNUM d;
     PTNUM inf;
     PTNUM n = list->size;
@@ -34,14 +36,18 @@ inline int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *li
 
     PTNUM eps = 1e-4;
 
-    for(int i = (int) (n); i--;){
-        d = items[i].intersect(r, &(items[i]));
+    for(int i = list->size; i--;){
+        struct Traceable current = items[i];
+        //fprintf(stdout, "CURRENT: %f %f %f\n", current.position.x, current.position.y, current.position.z);
+        d = items[i].intersect(r, &current);
 
         if(d > eps && d < *t){
             *t = d;
             *id = i;
+          //fprintf(stdout, "GOT ONE: T: %f   ID: %d\n", *t, *id);
         }
     }
 
+    //fprintf(stdout, "RESULT: %d\n", *t < inf);
     return *t < inf;
 }

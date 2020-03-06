@@ -1,5 +1,7 @@
 #include "ptl_vector.h"
 
+#include <stdio.h>
+
 
 struct Vec vec_init_e(){
   struct Vec v;
@@ -72,10 +74,17 @@ struct Vec vec_cross(struct Vec a, struct Vec b){
 
 struct Vec vec_div(struct Vec a, PTNUM b){
   struct Vec v;
-  PTNUM inv = 1 / b;
+
+  //fprintf(stdout, "IN: %f %f %f\n", a.x, a.y, a.z);
+
+  PTNUM inv = ((PTNUM) 1.0) / b;
+  //fprintf(stdout, "INV of %f: %f\n", b, inv);
 
   v.x = a.x * inv;
   v.y = a.y * inv;
   v.z = a.z * inv;
+
+  //fprintf(stdout, "OUT: %f %f %f\n", v.x, v.y, v.z);
+
   return v;
 }

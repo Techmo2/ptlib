@@ -43,7 +43,7 @@ struct Traceable {
     PTNUM (*intersect)(struct Ray *r, struct Traceable *tb);
 
     /* Computes the normal at the given intersection point */
-    struct Vec (*normal)(struct Traceable *t, struct Vec x);
+    struct Vec (*normal)(struct Traceable t, struct Vec x);
 };
 
 struct Traceable traceable_init(struct Properties properties_, struct Vec position_, struct Vec emission_, struct Vec color_, struct Material material_, PTNUM (*intersect_)(struct Ray *r, struct Traceable *tb));
