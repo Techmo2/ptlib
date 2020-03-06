@@ -1,4 +1,5 @@
 #include "ptl_util.h"
+#include "ptl_config.h"
 
 #include <stdio.h>
 
@@ -20,21 +21,12 @@ int to_int(PTNUM x){
 
 int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list){
     PTNUM d;
-    PTNUM inf;
+    PTNUM inf = INF;
+    PTNUM eps = EPS;
     PTNUM n = list->size;
     struct Traceable* items = list->elements;
 
-    #if PTNUM == float
-        inf = FLT_MAX;
-    #endif
-
-    #if PTNUM == double
-        inf = DBL_MAX;
-    #endif
-
     *t = inf;
-
-    PTNUM eps = 1e-4;
 
     for(int i = list->size; i--;){
         struct Traceable current = items[i];

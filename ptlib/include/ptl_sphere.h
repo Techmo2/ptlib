@@ -2,6 +2,7 @@
 #define PTL_SPHERE_h
 
 #include "ptl_traceable.h"
+#include "ptl_config.h"
 
 /* Intersect function for a tracable sphere */
 PTNUM sphere_intersect(struct Ray *r, struct Traceable *tb);

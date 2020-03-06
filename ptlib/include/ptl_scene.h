@@ -1,11 +1,9 @@
 #ifndef PTLIB_SCENE_h
 #define PTLIB_SCENE_h
 
-#define PTLIB_MAX_DEPTH 5
-#define PI 3.14159265
-
 #include "ptl_traceable_list.h"
 #include "ptl_image.h"
+#include "ptl_config.h"
 
 enum PTLIB_RENDER_DEV {
     PTLIB_GPU,

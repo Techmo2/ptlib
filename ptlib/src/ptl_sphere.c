@@ -6,7 +6,8 @@ PTNUM sphere_intersect(struct Ray *r, struct Traceable *tb){
         struct Vec op = vec_sub(tb->position, r->origin);
 
         PTNUM t;
-        PTNUM eps = 1e-4;
+        PTNUM eps = EPS;
+
         PTNUM b = dot(op, r->direction);
 
         PTNUM det = b * b - dot(op, op) + tb->properties.v1 * tb->properties.v1;

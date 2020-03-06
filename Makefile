@@ -1,4 +1,4 @@
-default: run
+default: build_all
 
 build_all: build_ptlib build_test
 
@@ -11,7 +11,10 @@ build_ptlib:
 run: build_test
 	cd ./test && ./ptlib-test
 
+.PHONY: clean
 clean:
 	cd ./ptlib && $(MAKE) clean
 	cd ./test && $(MAKE) clean
+
+
 

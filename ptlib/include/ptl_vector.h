@@ -9,8 +9,7 @@ A simple vector with various vector operations.
 #ifndef PTLIB_VECTOR_h
 #define PTLIB_VECTOR_h
 
-/* Define precision */
-#define PTNUM double
+#include "ptl_config.h"
 
 /* Ensure the sqrt() function is available of not using OpenCL */
 #ifndef __OPENCL_VERSION__

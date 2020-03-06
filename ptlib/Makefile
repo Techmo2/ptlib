@@ -1,40 +1,33 @@
-INC=-I./include/
-OPTS=-O0
-TARGET = libptlib.a
-CXX=gcc
+CC = gcc  # C compiler
+CFLAGS = -fPIC -Wall -fopenmp -Wextra -O3 -g -I./include/
+LDFLAGS = -shared 
+RM = rm -f
+TARGET_LIB = libpt.so
+TARGET_PATH = /usr/local/lib/${TARGET_LIB}
 
-$(TARGET): ptl_image.o ptl_scene.o ptl_traceable_list.o ptl_util.o ptl_vector.o ptl_material.o ptl_ray.o ptl_traceable.o ptl_sphere.o
-	ar rcs bin/$(TARGET) build/ptl_image.o build/ptl_scene.o build/ptl_traceable_list.o build/ptl_util.o build/ptl_vector.o build/ptl_material.o build/ptl_ray.o build/ptl_traceable.o build/ptl_sphere.o
+SRCS = src/ptl_image.c src/ptl_material.c src/ptl_ray.c src/ptl_scene.c src/ptl_sphere.c src/ptl_traceable_list.c src/ptl_traceable.c src/ptl_util.c src/ptl_vector.c src/ptl_rng.c# source files
+OBJS = $(SRCS:.c=.o)
 
-ptl_image.o:
-	$(CXX) $(OPTS) $(INC) -c src/ptl_image.c -o build/ptl_image.o 
+.PHONY: all
+all: ${TARGET_LIB}
 
-ptl_traceable_list.o: 
-	$(CXX) $(OPTS) $(INC) -c src/ptl_traceable_list.c -o build/ptl_traceable_list.o 
+$(TARGET_LIB): $(OBJS)
+	$(CC) ${LDFLAGS} -o $@ $^
 
-ptl_scene.o: ptl_image.o  ptl_traceable_list.o 
-	$(CXX) $(OPTS) $(INC) -c src/ptl_scene.c -o build/ptl_scene.o 
+$(SRCS:.c=.d):%.d:%.c
+	$(CC) $(CFLAGS) -MM $< >$@
 
-ptl_util.o: 
-	$(CXX) $(OPTS) $(INC) -c src/ptl_util.c -o build/ptl_util.o 
+include $(SRCS:.c=.d)
 
-ptl_vector.o:
-	$(CXX) $(OPTS) $(INC) -c src/ptl_vector.c -o build/ptl_vector.o 
-
-ptl_material.o:
-	$(CXX) $(OPTS) $(INC) -c src/ptl_material.c -o build/ptl_material.o 
-
-ptl_ray.o: 
-	$(CXX) $(OPTS) $(INC) -c src/ptl_ray.c -o build/ptl_ray.o 
-
-ptl_traceable.o:
-	$(CXX) $(OPTS) $(INC) -c src/ptl_traceable.c -o build/ptl_traceable.o 
-
-ptl_sphere.o:
-	$(CXX) $(OPTS) $(INC) -c src/ptl_sphere.c -o build/ptl_sphere.o 
-
-libs: libptlib.a 
-
+.PHONY: clean
 clean:
-	rm -rf build/*
-	rm -rf bin/*
+	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d)
+
+.PHONY: install
+install:
+	mv -n ${TARGET_LIB} ${TARGET_PATH}
+	ldconfig
+
+.PHONY: uninstall
+uninstall:
+	${RM} ${TARGET_PATH}

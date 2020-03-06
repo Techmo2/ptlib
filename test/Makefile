@@ -1,12 +1,17 @@
-INC=-I../ptlib/include
-LIB=../ptlib/bin/libptlib.a -lm
-OPTS=-O3
-CXX=gcc
+CC=gcc
+CFLAGS=-I../ptlib/include -fopenmp
+LDFLAGS=-lpt -lm
+DEPS = dynarr.h
+OBJ = dynarr.o ptlib-test.o
 
-TARGET=ptlib-test
+default: ptlib-test
 
-$(TARGET):
-	$(CXX) $(OPTS) $(INC) ptlib_test.c $(LIB) -o ptlib-test
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
+ptlib-test: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+
+.PHONY: clean
 clean:
-	rm ptlib-test
+	rm -f $(OBJ) ptlib-test

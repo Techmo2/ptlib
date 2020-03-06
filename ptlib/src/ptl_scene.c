@@ -1,10 +1,16 @@
 #include "ptl_scene.h"
 #include "ptl_util.h"
+#include "ptl_config.h"
+#include "ptl_rng.h"
 
 #include <malloc.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+
+#ifdef ENABLE_OPENMP
+#include <omp.h>
+#endif
 
 void scene_free(struct Scene* s){
     traceable_list_free(s->items);
@@ -37,13 +43,8 @@ PTNUM luma(struct Vec color){
     return dot(color, vec_init(0.2126f, 0.7152f, 0.0722f));
 }
 
-PTNUM ptrandom(){
-    PTNUM r = (PTNUM) rand() / (PTNUM) RAND_MAX;
-    return r;
-}
-
-struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
-    if(depth > PTLIB_MAX_DEPTH) return vec_init_e();
+struct Vec radiance(struct Ray r, int depth, struct TraceableList* list, struct RNG* rng){
+    if(depth > MAX_TRACE_DEPTH) return vec_init_e();
 
     PTNUM t;
     int id = 0;
@@ -81,7 +82,7 @@ struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
     if(++depth > 5){
         //fprintf(stdout, "Rand: %f\n", ptrandom());
 
-        if(ptrandom() < rrprobability){
+        if(rng_next_f(rng) < rrprobability){
             albedo = vec_div(albedo, rrprobability);
             //fprintf(stdout, "DIV Albedo: %f %f %f\n", albedo.r, albedo.g, albedo.b);
         }
@@ -91,8 +92,8 @@ struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
     }
 
     if(obj->material.type == PTMAT_DIFFUSE){
-        PTNUM phi = 2 * PI * ptrandom();
-        PTNUM r2 = ptrandom();
+        PTNUM phi = 2 * PI * rng_next_f(rng);
+        PTNUM r2 = rng_next_f(rng);
         PTNUM sinTheta = sqrt(r2);
         PTNUM cosTheta = sqrt(1 - r2);
 
@@ -116,7 +117,7 @@ struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
             obj->emission,
             vec_multv(
                 albedo,
-                radiance(ray_init(x, d), depth, list)
+                radiance(ray_init(x, d), depth, list, rng)
             )
         );
 
@@ -135,7 +136,7 @@ struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
             obj->emission,
             vec_multv(
                 albedo,
-                radiance(ray_init(x, refl), depth, list)
+                radiance(ray_init(x, refl), depth, list, rng)
             )
         );
 
@@ -164,24 +165,25 @@ struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int sa
 
     struct Vec* image = (struct Vec*) malloc(sizeof(struct Vec) * width * height);
 
-    fprintf(stdout, "CX: %f %f %f\n", cx.x, cx.y, cx.z);
-    fprintf(stdout, "CY: %f %f %f\n", cy.x, cy.y, cy.z);
-
-    fprintf(stdout, "CAM: %f %f %f\n", c.origin.x, c.origin.y, c.origin.z);
+    #ifdef ENABLE_OPENMP
+    #pragma omp parallel for schedule(dynamic, 1) private(r)
+    #endif
 
     for(int y = 0; y < height; ++y){
-        fprintf(stderr, "\r Rendering (%d spp) %5.2f%%", samples, 100.0 * y/(height - 1));
+        //fprintf(stderr, "\r Rendering (%d spp) %5.2f%%", samples, 100.0 * y/(height - 1));
         for(unsigned short x = 0; x < width; ++x){
+            struct RNG* rng = rng_new(rand());
+
             // 2x2 subpixel rows
             for(int sy = 0, i = (height - y - 1) * width + x; sy < 2; ++sy){
                 // 2x2 subpixel cols
                 for(int sx = 0; sx < 2; sx++, r = vec_init_e()){
                     // samples per subpixel
                     for(int s = 0; s < samps; s++){
-                        PTNUM r1 = 2.0 * ptrandom();
+                        PTNUM r1 = 2.0 * rng_next_f(rng);
                         
                         PTNUM dx = r1 < 1 ? sqrt(r1) - 1 : 1 - sqrt(2 - r1);
-						PTNUM r2 = 2.0 * ptrandom();
+						PTNUM r2 = 2.0 * rng_next_f(rng);
 						PTNUM dy;
 
                         if(r2 < 1.0){
@@ -229,7 +231,8 @@ struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int sa
                                 radiance(
                                     cam_n,
                                     0,
-                                    scene->items
+                                    scene->items,
+                                    rng
                                 ),
                                 (1.0 / samps)
                             )
