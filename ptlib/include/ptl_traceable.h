@@ -18,7 +18,7 @@ path tracing. This should be returned by any traceable objects you wish to add.
 /* Holds object properties that may be different for each type. Radius for example. */
 struct Properties {
     union {
-        PTNUM values[5];
+        PTNUM values[9];
 
         struct {
             PTNUM v1;
@@ -26,6 +26,10 @@ struct Properties {
             PTNUM v3;
             PTNUM v4;
             PTNUM v5;
+            PTNUM v6;
+            PTNUM v7;
+            PTNUM v8;
+            PTNUM v9;
         };
     };
 };
