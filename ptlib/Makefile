@@ -5,7 +5,7 @@ RM = rm -f
 TARGET_LIB = libpt.so
 TARGET_PATH = /usr/local/lib/${TARGET_LIB}
 
-SRCS = src/ptl_image.c src/ptl_material.c src/ptl_ray.c src/ptl_scene.c src/ptl_sphere.c src/ptl_traceable_list.c src/ptl_traceable.c src/ptl_util.c src/ptl_vector.c src/ptl_rng.c# source files
+SRCS = src/ptl_image.c src/ptl_material.c src/ptl_ray.c src/ptl_scene.c src/ptl_sphere.c src/ptl_traceable_list.c src/ptl_traceable.c src/ptl_util.c src/ptl_vector.c src/ptl_rng.c src/ptl_list.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all

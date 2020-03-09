@@ -26,6 +26,6 @@ struct Scene* scene_new(unsigned int width_, unsigned int height_, enum PTLIB_RE
 
 void scene_add_tracable(struct Scene* scene, struct Traceable t);
 
-struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int samples, unsigned int width, unsigned int height);
+struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int samples, unsigned int width, unsigned int height, int(*progress_callback)(int current_row, int total_rows));
 
 #endif //PTLIB_SCENE_h

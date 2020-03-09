@@ -150,7 +150,7 @@ struct Vec radiance(struct Ray r, int depth, struct TraceableList* list, struct 
     }
 }
 
-struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int samples, unsigned int width, unsigned int height){
+struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int samples, unsigned int width, unsigned int height, int(*progress_callback)(int current_row, int total_rows)){
 
     int samps = samples / 4;
 
@@ -170,7 +170,7 @@ struct Vec* scene_render_from(struct Scene* scene, struct Ray c, unsigned int sa
     #endif
 
     for(int y = 0; y < height; ++y){
-        //fprintf(stderr, "\r Rendering (%d spp) %5.2f%%", samples, 100.0 * y/(height - 1));
+        (*progress_callback)(y, height);
         for(unsigned short x = 0; x < width; ++x){
             struct RNG* rng = rng_new(rand());
 
