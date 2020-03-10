@@ -2,6 +2,7 @@
 #include "ptl_sphere.h"
 #include "ptl_util.h"
 #include "ptl_list.h"
+#include "ptl_loader.h"
 #include "bitmap.h"
 #include <stdio.h>
 #include <stdlib.h>

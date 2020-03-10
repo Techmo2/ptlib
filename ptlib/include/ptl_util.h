@@ -15,6 +15,5 @@
 PTNUM clamp(PTNUM x);
 int to_int(PTNUM x);
 int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list);
-int load_pt_scene_file(char* path, struct Scene* scene);
 
 #endif //PTLIB_UTIL_h

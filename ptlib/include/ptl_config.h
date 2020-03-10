@@ -12,9 +12,9 @@
 
 #define PI 3.14159265
 
-#ifndef MAKE_OPENMP_OVERRIDE
-#define ENABLE_OPENMP
-#endif
+#define COMMENT_CHAR '#'
+
+#define PTS_WHITESPACE " \t"
 
 /* ------------- */
 
@@ -34,6 +34,10 @@
 #define INF DBL_MAX
 #define PTNUM double
 
+#endif
+
+#ifndef MAKE_OPENMP_OVERRIDE
+#define ENABLE_OPENMP
 #endif
 
 #endif //PTLIB_CONFIG_h
