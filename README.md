@@ -68,4 +68,4 @@ make
 The result will be written to *output.bmp*.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
