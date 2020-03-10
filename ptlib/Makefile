@@ -1,5 +1,5 @@
 CC = gcc  # C compiler
-CFLAGS = -fPIC -Wall -fopenmp -Wextra -I./include/
+CFLAGS = -fPIC -Wall -Wextra -I./include/
 LDFLAGS = -shared 
 RM = rm -f
 TARGET_LIB = libpt.so
@@ -13,6 +13,13 @@ ifeq ($(DEBUG), 1)
 	CFLAGS += -O0 -g -DDEBUG
 else
 	CFLAGS += -O3 -fdisable-tree-cunrolli -march=native
+endif
+
+OPENMP ?= 1
+ifeq ($(OPENMP), 1)
+	CFLAGS += -fopenmp
+else
+	CFLAGS += -DMAKE_OPENMP_OVERRIDE
 endif
 
 .PHONY: all

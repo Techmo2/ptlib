@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -I../ptlib/include -fopenmp -Wall
 LDFLAGS = -lpt -lm
 DEPS = 
-OBJ = ptlib-test.o
+OBJ = ptlib-test.o bitmap.o
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)

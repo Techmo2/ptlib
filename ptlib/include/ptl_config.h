@@ -12,7 +12,9 @@
 
 #define PI 3.14159265
 
+#ifndef MAKE_OPENMP_OVERRIDE
 #define ENABLE_OPENMP
+#endif
 
 /* ------------- */
 
