@@ -1,3 +1,9 @@
+# Foreword
+PTLib is still under heavy development, and is no where near complete. As is, its quite entertaining, but not much of a tool.
+Currently, rendering is CPU only, and limited to spheres.
+
+Support for meshes, and GPU acceleration are the current goals for this project.
+
 # PTLib
 
 PTLib is a library for the rendering of path traced scenes and objects. 
