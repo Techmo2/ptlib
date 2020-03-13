@@ -76,4 +76,4 @@ The result will be written to *output.bmp*.
 ## License
 [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
 
-PTLib's functionality is partially derived from [smallpt](https://www.kevinbeason.com/smallpt/), written by Kevin Beason, please pay his page a visit :)
+PTLib's functionality is derived from [smallpt](https://www.kevinbeason.com/smallpt/), written by Kevin Beason, please pay his page a visit :)
