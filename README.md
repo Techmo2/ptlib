@@ -29,7 +29,7 @@ New objects can be added by providing a properly configured traceable structure.
 
 For a sphere, these functions can be found in ptl_sphere.c.
 
-Any properties that need to be stored within the object that do not conform to any of the standard members of a traceable should be stored in the traceable's *properties* data structure. By default, this consists of 9 values accessible as *v1* to *v9*. This data can also be accessed as an array by reading values from *values*.
+Any properties that need to be stored within the object that do not conform to any of the standard members of a traceable should be stored in the traceable's *properties* data structure. By default, this consists of 9 values accessible as *v1* to *v9*. This data can also be accessed as an array by reading from *properties.values*.
 
 ### PTLib Scene File
 PTLib can load scenes from a scene file (.pts). A scene file is a simple text file describing a single traceable object on each line. Comments may be added with # if desired.
