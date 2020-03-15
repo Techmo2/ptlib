@@ -15,7 +15,7 @@ PTLib uses OpenMP by default. Be sure the development library is installed, and 
 make OPENMP=0
 ```
 
-###TraceableObjectObjects
+### Traceable Objects
 PTLib defines every object as a TraceableObject structure. Current, and planned TraceableObjects are shown below.
 * Spheres (Implemented)
 * Triangular Meshes (In Progress)
