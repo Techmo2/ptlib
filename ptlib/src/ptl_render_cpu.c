@@ -48,7 +48,6 @@ struct Vec* scene_render_cpu(struct Scene* scene, struct Ray c, unsigned int sam
                             dy = 1.0 - (PTNUM) (sqrt(2.0 - r2));
                         }
 
-                        //fprintf(stdout, "DX: %f  DY: %f  R2: %f  R1: %f\n", dx, dy, r2, r1);
 
                         // Get primary ray direction
                         struct Vec d = vec_add(
@@ -65,7 +64,6 @@ struct Vec* scene_render_cpu(struct Scene* scene, struct Ray c, unsigned int sam
                             )
                         );
 
-                        //fprintf(stdout, "D: %f %f %f\n", d.x, d.y, d.z);
 
                         struct Ray cam_n = ray_init(
                             vec_add(
@@ -78,7 +76,6 @@ struct Vec* scene_render_cpu(struct Scene* scene, struct Ray c, unsigned int sam
                             vec_norm(d)
                         );
 
-                        //fprintf(stdout, "CAM_N: %f, %f, %f    %f, %f %f\n", cam_n.origin.x, cam_n.origin.y, cam_n.origin.z, cam_n.direction.x, cam_n.direction.y, cam_n.direction.z);
 
                         r = vec_add(
                             r,
@@ -91,8 +88,6 @@ struct Vec* scene_render_cpu(struct Scene* scene, struct Ray c, unsigned int sam
                                 (1.0 / samps)
                             )
                         );
-
-                        //fprintf(stdout, "R: %f %f %f\n", r.r, r.g, r.b);
                     }
 
                     image[i] = vec_add(

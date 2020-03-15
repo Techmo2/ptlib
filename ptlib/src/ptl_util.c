@@ -31,13 +31,13 @@ int intersects(struct Ray *r, PTNUM *t, int *id, struct TraceableList *list)
     PTNUM inf = INF;
     PTNUM eps = EPS;
     PTNUM n = list->size;
-    struct Traceable *items = list->elements;
+    struct TraceableObject *items = list->elements;
 
     *t = inf;
 
     for (int i = list->size; i--;)
     {
-        struct Traceable current = items[i];
+        struct TraceableObject current = items[i];
         d = items[i].intersect(r, &current);
 
         if (d > eps && d < *t)

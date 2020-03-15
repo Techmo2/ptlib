@@ -3,6 +3,7 @@
 #include "ptl_util.h"
 #include "ptl_list.h"
 #include "ptl_loader.h"
+#include "ptl_vector.h"
 #include "bitmap.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,10 +19,10 @@ int main(int argc, char** argv){
     int height = 480;
     int samples = 64;
 
-    /* Create a new scene to store our traceable objects */
+    /* Create a new scene to store ourTraceableObjectobjects */
     struct Scene* scene = scene_new(width, height, PTLIB_CPU);
 
-    /* Load traceable spheres from a text file */
+    /* LoadTraceableObjectspheres from a text file */
     /* They may also be hard coded in, but this is not recommended */
     load_pt_scene_file("example.pts", scene);
 

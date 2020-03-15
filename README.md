@@ -15,24 +15,24 @@ PTLib uses OpenMP by default. Be sure the development library is installed, and 
 make OPENMP=0
 ```
 
-### Traceable Objects
-PTLib defines every object as a traceable structure. Current, and planned traceables are shown below.
+###TraceableObjectObjects
+PTLib defines every object as a TraceableObject structure. Current, and planned TraceableObjects are shown below.
 * Spheres (Implemented)
 * Triangular Meshes (In Progress)
 * Cubes (Planned)
 
-### Custom Traceable Objects
-New objects can be added by providing a properly configured traceable structure. This structure must be configured with:
+### CustomTraceableObjectObjects
+New objects can be added by providing a properly configuredTraceableObjectstructure. This structure must be configured with:
 * A pointer to a function to find the normal vector of any given point.
 * A pointer to a function to find the distance to any given point on the object's surface.
 * Object properties such as position, emission, color, and material. 
 
 For a sphere, these functions can be found in ptl_sphere.c.
 
-Any properties that need to be stored within the object that do not conform to any of the standard members of a traceable should be stored in the traceable's *properties* data structure. By default, this consists of 9 values accessible as *v1* to *v9*. This data can also be accessed as an array by reading from *properties.values*.
+Any properties that need to be stored within the object that do not conform to any of the standard members of aTraceableObjectshould be stored in the traceable's *properties* data structure. By default, this consists of 9 values accessible as *v1* to *v9*. This data can also be accessed as an array by reading from *properties.values*.
 
 ### PTLib Scene File
-PTLib can load scenes from a scene file (.pts). A scene file is a simple text file describing a single traceable object on each line. Comments may be added with # if desired.
+PTLib can load scenes from a scene file (.pts). A scene file is a simple text file describing a singleTraceableObjectobject on each line. Comments may be added with # if desired.
 
 The format is as follows.
 

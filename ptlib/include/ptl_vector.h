@@ -42,7 +42,7 @@ struct Vec vec_multv(struct Vec a, struct Vec b);
 
 struct Vec vec_norm(struct Vec a);
 
-PTNUM dot(struct Vec a, struct Vec b);
+PTNUM vec_dot(struct Vec a, struct Vec b);
 
 struct Vec vec_cross(struct Vec a, struct Vec b);
 

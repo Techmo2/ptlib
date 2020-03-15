@@ -2,15 +2,15 @@
 #include <stdio.h>
 
 /* Intersect function for a tracable sphere */
-PTNUM sphere_intersect(struct Ray *r, struct Traceable *tb){
+PTNUM sphere_intersect(struct Ray *r, struct TraceableObject *tb){
         struct Vec op = vec_sub(tb->position, r->origin);
 
         PTNUM t;
         PTNUM eps = EPS;
 
-        PTNUM b = dot(op, r->direction);
+        PTNUM b = vec_dot(op, r->direction);
 
-        PTNUM det = b * b - dot(op, op) + tb->properties.v1 * tb->properties.v1;
+        PTNUM det = b * b - vec_dot(op, op) + tb->properties.v1 * tb->properties.v1;
 
         if (det < 0){
             return 0;
@@ -36,20 +36,19 @@ PTNUM sphere_intersect(struct Ray *r, struct Traceable *tb){
 }
 
 /* Function to get the normal at a given point */
-struct Vec sphere_normal(struct Traceable t, struct Vec x){
+struct Vec sphere_normal(struct TraceableObject t, struct Vec x){
     
     struct Vec ret = vec_div(
         vec_sub(x, t.position),
          t.properties.v1
     );
 
-    //fprintf(stdout, "POS: %f %f %f  X: %f %f %f OUT: %f %f %f\n", t.position.x, t.position.y, t.position.z, x.x, x.y, x.z, ret.x, ret.y, ret.z);
 
     return ret;
 }
 
-struct Traceable sphere_init(PTNUM radius_, struct Vec position_, struct Vec emission_, struct Vec color_, struct Material material_){
-    struct Traceable traceable;
+struct TraceableObject sphere_init(PTNUM radius_, struct Vec position_, struct Vec emission_, struct Vec color_, struct Material material_){
+    struct TraceableObject traceable;
 
     traceable.position = position_;
     traceable.emission = emission_;

@@ -6,14 +6,14 @@
 struct TraceableList {
     unsigned int size;
     unsigned int capacity;
-    struct Traceable* elements;
+    struct TraceableObject* elements;
 };
 
 struct TraceableList* traceable_list_new(unsigned int capacity_);
 
 void traceable_list_grow(struct TraceableList *list);
 
-void traceable_list_push(struct Traceable t, struct TraceableList *list);
+void traceable_list_push(struct TraceableObject t, struct TraceableList *list);
 
 void traceable_list_free(struct TraceableList *list);
 

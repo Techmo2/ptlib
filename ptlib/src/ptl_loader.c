@@ -116,10 +116,10 @@ int load_pt_scene_file(char *path, struct Scene *scene)
                         mat.type = PTMAT_DIFFUSE;
                     }
                     else if (strcmp(material, "MAT_SPECULAR") == 0)
-                    {
+                    {   
                         mat.type = PTMAT_SPECULAR;
                     }
-                    else if (strcmp(material, "MAT_TRANSPARENT") == 0)
+                    else if (strcmp(material, "MAT_REFRACT") == 0)
                     {
                         mat.type = PTMAT_REFRACT;
                     }

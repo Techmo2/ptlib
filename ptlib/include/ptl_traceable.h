@@ -2,8 +2,8 @@
 
 Author: Bradly Tillmann
 
-This struct represents a traceable object, and contains all information needed for
-path tracing. This should be returned by any traceable objects you wish to add.
+This struct represents aTraceableObjectobject, and contains all information needed for
+path tracing. This should be returned by anyTraceableObjectobjects you wish to add.
 
 */
 
@@ -35,7 +35,7 @@ struct Properties {
 };
 
 
-struct Traceable {
+struct TraceableObject {
     struct Vec position;
     struct Vec emission;
     struct Vec color;
@@ -44,14 +44,14 @@ struct Traceable {
     struct Properties properties;
 
     /* Determines if an intersection would occur, should be implemented by children */
-    PTNUM (*intersect)(struct Ray *r, struct Traceable *tb);
+    PTNUM (*intersect)(struct Ray *r, struct TraceableObject *tb);
 
     /* Computes the normal at the given intersection point */
-    struct Vec (*normal)(struct Traceable t, struct Vec x);
+    struct Vec (*normal)(struct TraceableObject t, struct Vec x);
 };
 
-struct Traceable traceable_init(struct Properties properties_, struct Vec position_, struct Vec emission_, struct Vec color_, struct Material material_, PTNUM (*intersect_)(struct Ray *r, struct Traceable *tb));
+struct TraceableObject traceable_init(struct Properties properties_, struct Vec position_, struct Vec emission_, struct Vec color_, struct Material material_, PTNUM (*intersect_)(struct Ray *r, struct TraceableObject *tb));
 
-struct Traceable traceable_init_e();
+struct TraceableObject traceable_init_e();
 
 #endif //PTL_TRACEABLE_h

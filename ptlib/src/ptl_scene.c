@@ -37,7 +37,7 @@ struct Scene* scene_new(unsigned int width_, unsigned int height_, enum PTLIB_RE
     return s;
 }
 
-void scene_add_traceable(struct Scene* scene, struct Traceable t){
+void scene_add_traceable(struct Scene* scene, struct TraceableObject t){
     traceable_list_push(t, scene->items);
 }
 

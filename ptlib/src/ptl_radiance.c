@@ -2,7 +2,7 @@
 #include "ptl_util.h"
 
 PTNUM luma(struct Vec color){
-    return dot(color, vec_init(0.2126f, 0.7152f, 0.0722f));
+    return vec_dot(color, vec_init(0.2126f, 0.7152f, 0.0722f));
 }
 
 inline struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
@@ -17,14 +17,16 @@ inline struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
         return vec_init_e();
     }
 
-    struct Traceable *obj = &(list->elements[id]);
+    struct TraceableObject *obj = &(list->elements[id]);
+
+    // Intersection point
     struct Vec x = vec_add(r.origin, vec_mult(r.direction, t));
 
     // Get normal
     struct Vec n = obj->normal(*obj, x);
 
     // Get corrext normal, flip if ray is on inside
-    struct Vec nl = dot(n, r.direction) < 0 ? n : vec_mult(n, -1);
+    struct Vec nl = vec_dot(n, r.direction) < 0.0 ? n : vec_mult(n, -1.0);
 
     // Albedo
     struct Vec albedo = obj->color;
@@ -78,7 +80,7 @@ inline struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
             r.direction,
             vec_mult(
                 n, 
-                2 * dot(n, r.direction)
+                2 * vec_dot(n, r.direction)
             )
         );
 
@@ -93,7 +95,149 @@ inline struct Vec radiance(struct Ray r, int depth, struct TraceableList* list){
         return ret;
     }
     else if(obj->material.type == PTMAT_REFRACT){
-        // TODO: Implement refract
+
+        struct Ray relfR = ray_init(
+            x,
+            vec_sub(
+            r.direction,
+                vec_mult(
+                    n, 
+                    2.0 * vec_dot(n, r.direction)
+                )
+            )
+        );
+
+        int going_in = vec_dot(n, nl) > 0.0;
+
+        PTNUM nc = 1.0;
+        PTNUM nt = 1.5;
+        PTNUM nnt;
+
+
+        if(going_in){
+            nnt = nc / nt;
+        }
+        else{
+            nnt = nt / nc;
+        }
+
+
+        PTNUM cosT = vec_dot(r.direction, nl);
+        PTNUM cosTS = 1.0 - nnt * nnt * (1.0 - cosT * cosT);
+
+
+        // Total internal reflection
+        if(cosTS < 0){
+            return vec_add(
+                obj->emission,
+                vec_multv(
+                    albedo,
+                    radiance(relfR, depth, list)
+                )
+            );
+        }
+
+
+        PTNUM tdir_t = cosT * cosT + sqrt(cosTS);
+        if(!going_in)
+            tdir_t *= -1.0;
+
+        struct Vec tdir = vec_norm(
+            vec_sub(
+                vec_mult(
+                    r.direction,
+                    nnt
+                ),
+                vec_mult(
+                    n,
+                    tdir_t
+                )
+            )
+        );
+
+        // Fresnel approximation
+        PTNUM a = nt - nc;
+        PTNUM b = nt + nc;
+        PTNUM R0 = a * a / (b * b);
+        PTNUM cosT2 = vec_dot(tdir, n);
+        
+        PTNUM c;
+        if(going_in){
+            c = 1 + cosT;
+        }
+        else {
+            c = 1 - cosT2; 
+        }
+
+        // Weight of reflection
+        PTNUM Re = R0 + (1.0 - R0) * c * c * c * c * c;
+
+        // Wight of refraction     
+        PTNUM Tr = 1.0 - Re;
+
+        // Probability of reflection
+        PTNUM P = 0.25 + 0.5 * Re;
+
+        PTNUM RP = Re / P;
+        PTNUM TP = Tr / (1 - P);
+
+        // Splitting below depth 3
+        if (depth < 3){
+            return vec_add(
+                obj->emission,
+                vec_multv(
+                    albedo,
+                    vec_add(
+                        vec_mult(
+                            radiance(relfR, depth, list),
+                            Re
+                        ),
+                        vec_mult(
+                            radiance(
+                                ray_init(
+                                    x,
+                                    tdir
+                                ),
+                                depth,
+                                list
+                            ),
+                            Tr
+                        )
+                    )
+                )
+            );
+        }
+        else{
+            if(rng_next() < P){
+                return vec_add(
+                    obj->emission,
+                    vec_multv(
+                        albedo,
+                        vec_mult(
+                            radiance(relfR, depth, list),
+                            RP
+                        )
+                    )
+                );
+            }
+            return vec_add(
+                    obj->emission,
+                    vec_multv(
+                        albedo,
+                        vec_mult(
+                            radiance(
+                                ray_init(
+                                    x, 
+                                    tdir
+                                ),
+                                depth,
+                                list
+                            ),
+                            TP
+                        )
+                    )
+                );
+        }
     }
     else{
         // Unknwon material

@@ -8,17 +8,17 @@ struct TraceableList* traceable_list_new(unsigned int capacity_){
 
     list->capacity = capacity_;
     list->size = 0;
-    list->elements = (struct Traceable*) malloc(sizeof(struct Traceable) * capacity_);
+    list->elements = (struct TraceableObject*) malloc(sizeof(struct TraceableObject) * capacity_);
 
     return list;
 }
 
 void traceable_list_grow(struct TraceableList *list){
     list->capacity = list->capacity * 2;
-    list->elements = (struct Traceable*) realloc(list->elements, sizeof(struct Traceable) * list->capacity);
+    list->elements = (struct TraceableObject*) realloc(list->elements, sizeof(struct TraceableObject) * list->capacity);
 }
 
-void traceable_list_push(struct Traceable t, struct TraceableList *list){
+void traceable_list_push(struct TraceableObject t, struct TraceableList *list){
     if(list->size >= list->capacity){
         traceable_list_grow(list);
     }
